@@ -8,7 +8,7 @@ const { chromium } = require('playwright');
   await page.goto('https://power-supply.kbrw.fr')
   console.log('Abriendo el Power')
   await page.fill('#username', 'sd32391')
-  await page.fill('#password', 'jJMA1981')
+  await page.fill('#password', '*****')
   await page.screenshot({ path: 'google.png' })
   await page.getByText('Submit').click()
   await page.screenshot({ path: 'google1.png' })
