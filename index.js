@@ -1,0 +1,46 @@
+const { chromium } = require('playwright');
+
+(async () => {
+  const ruta = '/User/SD32391/Documents/8 STELLANTIS WEB/python/'
+  const browser = await chromium.launch()
+  let page = await browser.newPage()
+  await page.goto('https://google.es')
+  await page.goto('https://power-supply.kbrw.fr')
+  console.log('Abriendo el Power')
+  await page.fill('#username', 'sd32391')
+  await page.fill('#password', 'jJMA1981')
+  await page.screenshot({ path: 'google.png' })
+  await page.getByText('Submit').click()
+  await page.screenshot({ path: 'google1.png' })
+  await page.click('text=Recherches et filtres')
+  await page.click('text=A appairer')
+  await page.click('text=Alternative proposée au réparateur')
+  await page.click('text=Pièce initiale conservée')
+  await page.click('text=En cours de préparation par Stellantis')
+  await page.click('text=Livré dans les dernières 48 heures')
+  await page.click('text=A réceptionner')
+  // Start waiting for download before clicking. Note no await.
+  const downloadPromise = await page.waitForEvent('download')
+  await page.getByText('Download file').click()
+  const download = await downloadPromise
+
+  // Wait for the download process to complete and save the downloaded file somewhere.
+  await download.saveAs('/path/to/save/at/' + download.suggestedFilename())
+  console.log(download.suggested_filename)
+  await download.save_as(ruta + 'power.csv')
+  await page.close()
+  page = await browser.new_page()
+  await page.goto('https://ppcr.es')
+  await page.click('.top')
+  await page.fill('#user', 'chechu')
+  await page.fill('#pass', 'laguna')
+  await page.keyboard.press('Enter')
+  await page.get_by_alt_text('configuracion').click()
+  await page.get_by_title('pending').click()
+  await page.screenshot({ path: 'chechu1.png' })
+  await page.locator('[type=file]').set_input_files('power.csv')
+  await page.screenshot({ path: 'chechu2.png' })
+  await page.locator('[type=submit]').click()
+  await page.screenshot({ path: 'chechu3.png' })
+  await browser.close()
+})()
